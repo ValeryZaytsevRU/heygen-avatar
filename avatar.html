@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Старт сессии HeyGen</title>
+  <script src="https://unpkg.com/@heygen/streaming-avatar/dist/streaming-avatar.min.js"></script>
+</head>
+<body>
+  <div id="avatar-container"></div>
+  <script>
+    // URL и токен передаются сервером, например, через query string:
+    const params = new URLSearchParams(location.search);
+    const ws = params.get('ws_url');
+    const token = params.get('token');
+
+    const avatar = new StreamingAvatar({ token, basePath: ws });
+    avatar.attach(document.getElementById('avatar-container'));
+    avatar.start(); // В некоторых SDK это может быть другой метод
+  </script>
+</body>
+</html>
