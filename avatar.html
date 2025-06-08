@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <title>Старт сессии HeyGen</title>
+  <meta charset="UTF-8" />
+  <title>HeyGen Avatar</title>
+  <!-- Подключаем HeyGen Streaming Avatar SDK -->
   <script src="https://unpkg.com/@heygen/streaming-avatar/dist/streaming-avatar.min.js"></script>
+  <style>
+    /* Настройка размера контейнера */
+    #avatar-container {
+      width: 100%;
+      max-width: 640px;
+      height: 360px;
+      margin: 40px auto;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
   <div id="avatar-container"></div>
-  <script>
-    // URL и токен передаются сервером, например, через query string:
-    const params = new URLSearchParams(location.search);
-    const ws = params.get('ws_url');
-    const token = params.get('token');
 
+  <script>
+    // Получаем параметры из URL
+    const qs = new URLSearchParams(window.location.search);
+    const ws = qs.get("ws_url");
+    const token = qs.get("access_token");
+
+    if (!ws || !token) {
+      document.body.innerHTML = "<p style='color:red; text-align:center;'>Ошибка: отсутствуют параметры ws_url или access_token</p>";
+      throw new Error("Missing ws_url or access_token");
+    }
+
+    // Создаем экземпляр и запускаем аватар
     const avatar = new StreamingAvatar({ token, basePath: ws });
-    avatar.attach(document.getElementById('avatar-container'));
-    avatar.start(); // В некоторых SDK это может быть другой метод
+    avatar.attach(document.getElementById("avatar-container"));
+    avatar.start(); // или createStartAvatar() в зависимости от версии SDK
   </script>
 </body>
 </html>
